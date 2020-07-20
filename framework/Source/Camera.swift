@@ -55,7 +55,7 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     }
     public var runBenchmark:Bool = false
     public var logFPS:Bool = false
-    public var audioEncodingTarget:AudioEncodingTarget? {
+    public var audioEncodingTarget: AudioEncodingTarget? {
         didSet {
             guard let audioEncodingTarget = audioEncodingTarget else {
                 self.removeAudioInputsAndOutputs()
@@ -199,13 +199,13 @@ public class Camera: NSObject, ImageSource, AVCaptureVideoDataOutputSampleBuffer
     
     public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         
-        guard (frameRenderingSemaphore.wait(timeout:DispatchTime.now()) == DispatchTimeoutResult.success) else { return }
-        
         guard (output != audioOutput) else {
             self.processAudioSampleBuffer(sampleBuffer)
             return
         }
         
+        guard (frameRenderingSemaphore.wait(timeout:DispatchTime.now()) == DispatchTimeoutResult.success) else { return }
+       
         let startTime = CFAbsoluteTimeGetCurrent()
         
         let cameraFrame = CMSampleBufferGetImageBuffer(sampleBuffer)!
